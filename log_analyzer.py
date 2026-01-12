@@ -23,6 +23,10 @@ def read_logfile(filepath):
 
 def main():
 
+    print(line)
+    print("     LOG ANALYZER - Security Analysis Tool")
+    print("\n")
+
     if len(sys.argv) < 2:
         print(line + "\n")
         print("Usage: python log_analyzer.py <logfile>\n")
