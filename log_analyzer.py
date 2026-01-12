@@ -8,10 +8,18 @@ from collections import defaultdict, Counter
 from datetime import datetime, timezone
 import matplotlib.pyplot as plt
 
+# text colour
+bold = "\033[1m"
+magenta = "\033[35m"
+red = "\033[31m"
+yellow = "\033[33m"
+green = "\033[32m"
+reset = "\033[0m"
 
 
-threshold = 5 # amount of logins tolerated as not suspicious
-line = "-" * 50
+threshold = 5 # amount of logins tolerated as not suspicious"
+line = magenta + bold + "-" * 50 + reset # longer bold and magenta line
+
 
 
 #reads a logfile and return all lines
@@ -33,22 +41,24 @@ def read_logfile(filepath):
 
 def main():
 
-    print(line)
-    print("     LOG ANALYZER - Security Analysis Tool")
-    print("\n")
+    print(line + "\n")
+    print(magenta + bold + "    LOG ANALYZER - Security Analysis Tool" + reset)
 
     if len(sys.argv) < 2:
-        print(line + "\n")
+        print(line +  "\n")
         print("Usage: python log_analyzer.py <logfile>\n")
-        print("     -Please provide a log file to analyze-")
-        print("\nExample: python log_analyzer.py test-log.txt\n")
+        print(red + "     -Please provide a log file to analyze-" + reset)
+        print("Make sure to be located in the same directory as the script and log file.")
+        print(" *  Please check your current location: pwd (for location), ls(to see files)  *")
+        print("\n" + yellow + "HOW TO USE: python log_analyzer <filename>" + reset)
+        print("\n" + green + "----> Example: python log_analyzer.py test-log.txt" + reset + "\n")
         sys.exit(1)
 
 
     logfile = sys.argv[1]
     log_lines = read_logfile(logfile)
 
-    print(f"       Analyzing {logfile}...\n")
+    print(f"{yellow}       Analyzing {logfile}...{reset}\n")
 
     total = count_login_attempts(log_lines)
     failed = count_failed_logins(log_lines)
@@ -67,7 +77,7 @@ def main():
     print("Analysis Results:")
     print("Total logins:", total)
     print("Failed logins:", failed)
-    print(f"\nSuspicious IPs (>{threshold} attempts):")
+    print(f"\n{red}Suspicious IPs (>{threshold} attempts):{reset}")
 
     if suspicious:
         for ip, count in suspicious.items():
@@ -95,7 +105,7 @@ def main():
         plt.show() # shows diagram
 
     print("\n" + line)
-    print("\nAnalysis complete!")
+    print(green + bold + "\n          ¤   Analysis complete!   ¤\n" + reset)
     print(line + "\n")
 
 
@@ -199,7 +209,7 @@ def export_report(total, failed, suspicious_ips, filename="report.txt"):
         f.write(f"Total login attempts: {total}\n")
         f.write(f"Failed login attempts: {failed}\n\n")
 
-        f.write(f"Suspicious IP addresses:\n")
+        f.write(f"{red}Suspicious IP addresses:{reset}\n")
         if not suspicious_ips:
             f.write("None\n")
 
