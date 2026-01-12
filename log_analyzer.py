@@ -59,10 +59,15 @@ def count_login_attempts(log_lines):
 
 
 def count_failed_logins(log_lines):
+    count = 0
+
+    for line in log_lines:
+        if "failed" in line.lower():
+            count += 1
+
+    return count
 
     # counts failed logins per user
-
-    pass
 
 
 def logins_per_user(log_lines):
