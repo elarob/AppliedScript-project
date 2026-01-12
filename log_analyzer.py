@@ -5,6 +5,7 @@ import sys # for sys.exit
 import os 	# file- and catalog management
 import re
 from collections import defaultdict, Counter
+from datetime import datetime, timezone
 
 
 def read_logfile(filepath):
@@ -87,6 +88,30 @@ def export_suspicious_ips(suspicious_ips, filename="suspicious_ips.txt"):
     # exports suspicious IPs to a textfile
 
     pass
+
+
+def export_report(total, failed, suspicious_ips, filename="report.txt"): # exports a full analysis report
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
+
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write("Log Analysis Report\n")
+        f.write(line + "\n")
+        f.write(f"Generated: {timestamp}\n\n")
+
+        f.write(f"Total login attempts: {total}\n")
+        f.write(f"Failed login attempts: {failed}\n\n")
+
+        f.write(f"Suspicious IP addresses:\n")
+        if not suspicious_ips:
+            f.wrifinte("None\n")
+
+        else:
+            for ip, count in suspicious_ips.items():
+                f.write(f" - {ip}: {count} attempts\n")
+
+    print(line)
+    print(f"* Report saved as {filename}")
+    
 
 
 
