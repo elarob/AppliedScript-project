@@ -24,8 +24,12 @@ def read_logfile(filepath):
 def main():
 
     if len(sys.argv) < 2:
-        print("Usage: python log_analyzer.py <logfile>")
+        print(line + "\n")
+        print("Usage: python log_analyzer.py <logfile>\n")
+        print("     -Please provide a log file to analyze-")
+        print("\nExample: python log_analyzer.py test-log.txt\n")
         sys.exit(1)
+
 
     logfile = sys.argv[1]      
     log_lines = read_logfile(logfile)
