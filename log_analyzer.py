@@ -48,11 +48,14 @@ def main():
 # log analysis features
 
 def count_login_attempts(log_lines):
-    
+    count = 0
+    for line in log_lines:
+        if "login" in line.lower():
+            count += 1
+
+    return count
 
     # counts total login attempts
-
-    pass
 
 
 def count_failed_logins(log_lines):
