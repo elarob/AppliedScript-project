@@ -6,6 +6,7 @@ import os 	# file- and catalog management
 import re
 from collections import defaultdict, Counter
 from datetime import datetime, timezone
+import matplotlib.pyplot as plt
 
 
 def read_logfile(filepath):
@@ -31,6 +32,8 @@ def main():
     logfile = sys.argv[1]      
     log_lines = read_logfile(logfile)
 
+    print(f"       Analyzing {logfile}...\n")
+
     total = count_login_attempts(log_lines)
     failed = count_failed_logins(log_lines)
 
@@ -38,13 +41,46 @@ def main():
     ip_counts = logins_per_ip(log_lines)
 
     suspicious = find_suspicious_ips(ip_counts)
+
+# export results
+    export_report(total, failed, suspicious) 
     export_suspicious_ips(suspicious)
 
+    # display results
+    print(line)
+    print("Analysis Results:")
     print("Total logins:", total)
     print("Failed logins:", failed)
-    print("Suspicious IPs:", suspicious)
+    print(f"\nSuspicious IPs (>{threshold} attempts):")
+
+    if suspicious:
+        for ip, count in suspicious.items():
+            print(f" * IP {ip}: {count} attempts")
+
+    else:
+        print(" None detected")
 
 
+    #create visual output
+    if suspicious:
+        ips = list(suspicious.keys())
+        counts = list(suspicious.values())
+
+
+        plt.figure(figsize=(10,6))
+        plt.bar(ips, counts, color="red", alpha=0.7)
+        plt.title("Suspicious IP-addresses ( Threshold > 5 login attemps.)")
+        plt.xlabel("IP-addresses")
+        plt.ylabel("Number of login attempts")
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+        plt.savefig("possible_attack.png") # saves pic
+        print(f"\nPicture saved av possible_attack.png")
+        plt.show() # shows diagram
+
+    print("\n" + line)
+    print("\nAnalysis complete!")
+    print(line + "\n")
 
 # log analysis features
 
