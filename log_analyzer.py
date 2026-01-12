@@ -11,20 +11,24 @@ import matplotlib.pyplot as plt
 
 
 threshold = 5 # amount of logins tolerated as not suspicious
+line = "-" * 50
 
 
+#reads a logfile and return all lines
 def read_logfile(filepath):
-
-
-    #reads a logfile and return all lines
 
     try:
         with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             return f.readlines()
-        
+
     except FileNotFoundError:
         print(f"Error: cannot locate file {filepath}")
         sys.exit(1)
+
+    except Exception as e:
+        print(f"Unexpected error while reading {filepath}: {e}")
+        sys.exit(1)
+
 
 
 def main():
@@ -41,7 +45,7 @@ def main():
         sys.exit(1)
 
 
-    logfile = sys.argv[1]      
+    logfile = sys.argv[1]
     log_lines = read_logfile(logfile)
 
     print(f"       Analyzing {logfile}...\n")
@@ -54,8 +58,8 @@ def main():
 
     suspicious = find_suspicious_ips(ip_counts)
 
-# export results
-    export_report(total, failed, suspicious) 
+    # export results
+    export_report(total, failed, suspicious)
     export_suspicious_ips(suspicious)
 
     # display results
@@ -73,7 +77,7 @@ def main():
         print(" None detected")
 
 
-    #create visual output
+    # create visual output
     if suspicious:
         ips = list(suspicious.keys())
         counts = list(suspicious.values())
@@ -94,8 +98,13 @@ def main():
     print("\nAnalysis complete!")
     print(line + "\n")
 
+
+
+
 # log analysis features
 
+
+# counts total login attempts
 def count_login_attempts(log_lines):
     count = 0
     for line in log_lines:
@@ -104,9 +113,8 @@ def count_login_attempts(log_lines):
 
     return count
 
-    # counts total login attempts
 
-
+# counts failed logins per user
 def count_failed_logins(log_lines):
     count = 0
 
@@ -116,9 +124,8 @@ def count_failed_logins(log_lines):
 
     return count
 
-    # counts failed logins per user
 
-
+# counts login attempts per user
 def logins_per_user(log_lines):
     user_stats = {}
 
@@ -141,10 +148,7 @@ def logins_per_user(log_lines):
     return user_stats
 
 
-    # counts login attempts per user
-
-
-
+# counts login attempts per IP address
 def logins_per_ip(log_lines):
     ip_counts = Counter()
 
@@ -156,9 +160,9 @@ def logins_per_ip(log_lines):
 
     return dict(ip_counts)
 
-    # counts login attempts per IP address
 
 
+# finds IPs with mote than threshold login attempts
 def find_suspicious_ips(ip_counts):
     suspicious = {} # empty dict for suspicious IP:s
 
@@ -167,10 +171,10 @@ def find_suspicious_ips(ip_counts):
             suspicious[ip] = count
 
     return suspicious
-    # finds IPs with more than threshold login attempts
 
 
 
+# exports suspicious IPs to a textfile
 def export_suspicious_ips(suspicious_ips, filename="suspicious_ips.txt"):
     with open(filename, "w") as f:
         if not suspicious_ips:
@@ -181,12 +185,10 @@ def export_suspicious_ips(suspicious_ips, filename="suspicious_ips.txt"):
 
     print(f"* Suspicious IPs saved as {filename}")
 
-    # exports suspicious IPs to a textfile
-
-    pass
 
 
-def export_report(total, failed, suspicious_ips, filename="report.txt"): # exports a full analysis report
+# exports a full analysis report
+def export_report(total, failed, suspicious_ips, filename="report.txt"):
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
 
     with open(filename, "w", encoding="utf-8") as f:
@@ -207,8 +209,6 @@ def export_report(total, failed, suspicious_ips, filename="report.txt"): # expor
 
     print(line)
     print(f"* Report saved as {filename}")
-    
-
 
 
 
