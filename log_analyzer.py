@@ -7,6 +7,10 @@ import re
 from collections import defaultdict, Counter
 
 
+
+threshold = 5 # amount of logins tolerated as not suspicious
+
+
 def read_logfile(filepath):
 
 
@@ -75,11 +79,16 @@ def logins_per_ip(log_lines):
 
     pass
 
-def find_suspicious_ips(ip_counts, threshold=5):
+def find_suspicious_ips(ip_counts):
+    suspicious = {} # empty dict for suspicious IP:s
 
+    for ip, count in ip_counts.items():
+        if count > threshold:
+            suspicious[ip] = count
+
+    return suspicious
     # finds IPs with more than threshold login attempts
 
-    pass
 
 
 def export_suspicious_ips(suspicious_ips, filename="suspicious_ips.txt"):
