@@ -101,10 +101,18 @@ def logins_per_user(log_lines):
 
 
 def logins_per_ip(log_lines):
+    ip_counts = Counter()
+
+    for line in log_lines:
+        match = re.search(r'ip=([\d\.]+)', line)
+        if match:
+            ip_counts[match.group(1)] += 1
+
+
+    return dict(ip_counts)
 
     # counts login attempts per IP address
 
-    pass
 
 def find_suspicious_ips(ip_counts, threshold=5):
 
