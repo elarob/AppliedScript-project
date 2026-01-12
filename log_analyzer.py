@@ -75,10 +75,29 @@ def count_failed_logins(log_lines):
 
 
 def logins_per_user(log_lines):
+    user_stats = {}
+
+
+    for line in log_lines:
+        user_match = re.search(r"user=(\w+)", line)
+        status_match = re.search(r"status=(\w+)", line)
+
+
+        if user_match and status_match:
+            user = user_match.group(1)
+            status = status_match.group(1)
+
+            if user not in user_stats:
+                user_stats[user] = {"success": 0, "failed": 0}
+
+            if status in ("success", "failed"):
+                user_stats[user][status] += 1
+
+    return user_stats
+
 
     # counts login attempts per user
 
-    pass
 
 
 def logins_per_ip(log_lines):
