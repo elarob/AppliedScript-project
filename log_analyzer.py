@@ -85,7 +85,7 @@ def main():
 
         plt.figure(figsize=(10,6))
         plt.bar(ips, counts, color="red", alpha=0.7)
-        plt.title("Suspicious IP-addresses ( Threshold > 5 login attemps.)")
+        plt.title("Suspicious IP-addresses ( Threshold > 5 login attempts.)")
         plt.xlabel("IP-addresses")
         plt.ylabel("Number of login attempts")
         plt.xticks(rotation=45, ha='right')
@@ -162,7 +162,7 @@ def logins_per_ip(log_lines):
 
 
 
-# finds IPs with mote than threshold login attempts
+# finds IPs with more than threshold login attempts
 def find_suspicious_ips(ip_counts):
     suspicious = {} # empty dict for suspicious IP:s
 
@@ -201,7 +201,7 @@ def export_report(total, failed, suspicious_ips, filename="report.txt"):
 
         f.write(f"Suspicious IP addresses:\n")
         if not suspicious_ips:
-            f.wrifinte("None\n")
+            f.write("None\n")
 
         else:
             for ip, count in suspicious_ips.items():
