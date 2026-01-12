@@ -92,6 +92,14 @@ def find_suspicious_ips(ip_counts):
 
 
 def export_suspicious_ips(suspicious_ips, filename="suspicious_ips.txt"):
+    with open(filename, "w") as f:
+        if not suspicious_ips:
+            f.write("No suspicious IPs found.\n")
+        else:
+            for ip, count in suspicious_ips.items():
+                f.write(f"{ip}: {count} attempts\n")
+
+    print(f"* Suspicious IPs saved as {filename}")
 
     # exports suspicious IPs to a textfile
 
