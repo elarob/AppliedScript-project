@@ -38,13 +38,17 @@ pip install matplotlib
 1. ** Clone the repository:**
 ```bash
 git clone https://github.com/elarob/AppliedScript-project.git
-cd AppliedScript-project```
-
+cd AppliedScript-project 
+```
 
 2. **Test with included sample logs(or use your own):**
+```
 python log_analyzer test-log.txt
+```
 __**or**__
+```
 python log_analyzer normal-log.txt
+```
 
 
 3. **Use your own log file:**
@@ -53,13 +57,17 @@ Ensure the log contains login attempt entries in the following format:
 >user=<username>, status=<success|failed>, ip=<IP'address>
 
 4. **Run the script:**
-```python log_analyzer.py <logfile>```
+```
+python log_analyzer.py <logfile>
+```
 __Replace <logfile> with the name of your own log file._
 
 ###Example Output:
 When you run:
 
-```python log_analyzer test-log.txt```
+```
+python log_analyzer test-log.txt
+```
 
 The script will display the results in the terminal and saves:
 * report.txt: Full analysis report
