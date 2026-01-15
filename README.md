@@ -78,10 +78,14 @@ The script will display the results in the terminal and saves:
 ### Screenshot/video
 
 ![Test-log demo](Screenshot-script.png)
+
+
 ![Normal-log demo](Screenshot-normal-log.png)
 
 ### Flowchart
 
+
+![Flowchart](Flowchart-log_analyzer.png)
 
 
 ### Additional Notes
