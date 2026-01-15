@@ -37,10 +37,17 @@ def read_logfile(filepath):
         print(f"Unexpected error while reading {filepath}: {e}")
         sys.exit(1)
 
-
+def clear_screen():
+    # For Linux/MacOS
+    if os.name == 'possix':
+        os.system('clear')
+    # For Windows
+    elif os.name == 'nt':
+        os.system('cls')        
 
 def main():
-
+    clear_screen()
+    
     print(line + "\n")
     print(magenta + bold + "    LOG ANALYZER - Security Analysis Tool" + reset)
 
@@ -226,3 +233,4 @@ def export_report(total, failed, suspicious_ips, filename="report.txt"):
 
 if __name__ == "__main__":
     main()
+
