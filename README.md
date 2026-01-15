@@ -60,23 +60,25 @@ Ensure the log contains login attempt entries in the following format:
 ```
 python log_analyzer.py <logfile>
 ```
-__Replace <logfile> with the name of your own log file._
+_Replace <logfile> with the name of your own log file._
 
-###Example Output:
-When you run:
+##Example Output:
+
+**When you run:**
 
 ```
 python log_analyzer test-log.txt
 ```
 
 The script will display the results in the terminal and saves:
-* report.txt: Full analysis report
-* suspicious_ips.txt: List of suspicious IPs
-* possible_attack.png: Bar chart of suspicious IPs
+* **report.txt:**
+* **suspicious_ips.txt:**
+* **possible_attack.png:**
 
 ### Screenshot/video
 
-
+![Test-log demo](Screenshot-script.png)
+![Normal-log demo](Screenshot-normal-log.png)
 
 ### Flowchart
 
@@ -88,9 +90,9 @@ The script will display the results in the terminal and saves:
         - You can adjust this value in the script if needed.
 * **Output files:** 
         - The script saves three output files:
-                * report.txt(full analysis report), 
-                * suspicious_ips.txt(list of suspicious IPs)
-                * possible_attack.png(a visual output with suspicious IPs).
+                * **report.txt:** Full analysis report 
+                * **suspicious_ips.txt:** List of suspicious IPs
+                * **possible_attack.png:** A visual output with suspicious IPs
 
 > **Note**: Always ensure you have proper authorization before analysing log files.
 > This tool should only be used on systems you own or have explicit permission to audit.
