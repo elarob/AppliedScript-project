@@ -85,7 +85,7 @@ The script will display the results in the terminal and saves:
 ### Flowchart
 
 
-![Flowchart](Flowchart-log_analyzer.png)
+![Flowchart](Flowchart-la.png)
 
 
 ### Additional Notes
