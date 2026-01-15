@@ -1,14 +1,23 @@
 #!/usr/bin/env python3
-#Log Analyzer - to analyze logs and count logins
+#Log Analyzer - Security Analysis Tool for detecting suspicious login patterns
 
-import sys # for sys.exit
-import os 	# file- and catalog management
-import re
+"""
+
+Parse log files to identify brute force attacks via failed login attempts and suspicious IP patterns.
+Generates detailed reports, suspicious IP lists and visualizations
+
+"""
+
+
+import sys # for sys.exit/exit the program and handle command line arguments
+import os # file- and catalog management and clearing the screen
+import re # regular expressions - used to find patterns in text
 from collections import defaultdict, Counter
 from datetime import datetime, timezone
 import matplotlib.pyplot as plt
 
-# text colour
+
+# text color - ANSI codes for terminal output (Linux/Mac/Windows compatible)
 bold = "\033[1m"
 magenta = "\033[35m"
 red = "\033[31m"
@@ -17,12 +26,12 @@ green = "\033[32m"
 reset = "\033[0m"
 
 
-threshold = 5 # amount of logins tolerated as not suspicious"
-line = magenta + bold + "-" * 50 + reset # longer bold and magenta line
+threshold = 5 # amount of logins tolerated as not suspicious
+line = magenta + bold + "-" * 50 + reset
 
 
 
-#reads a logfile and return all lines
+#read a log file with UTF-8 fallback and comprehensive error handling
 def read_logfile(filepath):
 
     try:
@@ -38,19 +47,20 @@ def read_logfile(filepath):
         sys.exit(1)
 
 def clear_screen():
-    # For Linux/MacOS
-    if os.name == 'possix':
+    if os.name == 'possix': # for Linux/MacOS
         os.system('clear')
-    # For Windows
-    elif os.name == 'nt':
-        os.system('cls')        
+    elif os.name == 'nt': # for Windows
+        os.system('cls')
 
-def main():
+
+
+def main(): # main analysis workflow: parse -> analyze -> report -> visualize
     clear_screen()
-    
+
     print(line + "\n")
     print(magenta + bold + "    LOG ANALYZER - Security Analysis Tool" + reset)
 
+    # validate CLI arguments
     if len(sys.argv) < 2:
         print(line +  "\n")
         print("Usage: python log_analyzer.py <logfile>\n")
@@ -67,6 +77,8 @@ def main():
 
     print(f"{yellow}       Analyzing {logfile}...{reset}\n")
 
+
+    # calls different functions to analyze the log
     total = count_login_attempts(log_lines)
     failed = count_failed_logins(log_lines)
 
@@ -75,11 +87,11 @@ def main():
 
     suspicious = find_suspicious_ips(ip_counts)
 
-    # export results
+    # export structured output
     export_report(total, failed, suspicious)
     export_suspicious_ips(suspicious)
 
-    # display results
+    # display summary
     print(line)
     print("Analysis Results:")
     print("Total logins:", total)
@@ -94,7 +106,7 @@ def main():
         print(" None detected")
 
 
-    # create visual output
+    # create visual output - graph of suspicious IPs
     if suspicious:
         ips = list(suspicious.keys())
         counts = list(suspicious.values())
@@ -118,10 +130,10 @@ def main():
 
 
 
-# log analysis features
+# === log analysis functions/features ===
 
 
-# counts total login attempts
+# count total lines containing 'login' keyword (case-insesitive)
 def count_login_attempts(log_lines):
     count = 0
     for line in log_lines:
@@ -131,7 +143,7 @@ def count_login_attempts(log_lines):
     return count
 
 
-# counts failed logins per user
+# count total failed login attempts
 def count_failed_logins(log_lines):
     count = 0
 
@@ -142,14 +154,14 @@ def count_failed_logins(log_lines):
     return count
 
 
-# counts login attempts per user
+# count login attempts per user
 def logins_per_user(log_lines):
     user_stats = {}
 
 
     for line in log_lines:
-        user_match = re.search(r"user=(\w+)", line)
-        status_match = re.search(r"status=(\w+)", line)
+        user_match = re.search(r"user=(\w+)", line) # use regular expression to find "user=something" 
+        status_match = re.search(r"status=(\w+)", line) # to find "status=something"
 
 
         if user_match and status_match:
@@ -165,7 +177,7 @@ def logins_per_user(log_lines):
     return user_stats
 
 
-# counts login attempts per IP address
+# count login attempts per IP address
 def logins_per_ip(log_lines):
     ip_counts = Counter()
 
@@ -179,7 +191,7 @@ def logins_per_ip(log_lines):
 
 
 
-# finds IPs with more than threshold login attempts
+# identify IPs exceeding security threshold
 def find_suspicious_ips(ip_counts):
     suspicious = {} # empty dict for suspicious IP:s
 
@@ -191,7 +203,7 @@ def find_suspicious_ips(ip_counts):
 
 
 
-# exports suspicious IPs to a textfile
+# exports suspicious IPs to a text file
 def export_suspicious_ips(suspicious_ips, filename="suspicious_ips.txt"):
     with open(filename, "w") as f:
         if not suspicious_ips:
@@ -204,7 +216,7 @@ def export_suspicious_ips(suspicious_ips, filename="suspicious_ips.txt"):
 
 
 
-# exports a full analysis report
+# generate timestamped analysis report
 def export_report(total, failed, suspicious_ips, filename="report.txt"):
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
 
