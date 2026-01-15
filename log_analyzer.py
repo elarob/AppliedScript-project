@@ -203,13 +203,13 @@ def export_report(total, failed, suspicious_ips, filename="report.txt"):
 
     with open(filename, "w", encoding="utf-8") as f:
         f.write("Log Analysis Report\n")
-        f.write(line + "\n")
+        f.write("-" * 50 + "\n")
         f.write(f"Generated: {timestamp}\n\n")
 
         f.write(f"Total login attempts: {total}\n")
         f.write(f"Failed login attempts: {failed}\n\n")
 
-        f.write(f"{red}Suspicious IP addresses:{reset}\n")
+        f.write(f"Suspicious IP addresses:\n")
         if not suspicious_ips:
             f.write("None\n")
 
@@ -217,7 +217,6 @@ def export_report(total, failed, suspicious_ips, filename="report.txt"):
             for ip, count in suspicious_ips.items():
                 f.write(f" - {ip}: {count} attempts\n")
 
-    print(line)
     print(f"* Report saved as {filename}")
 
 
